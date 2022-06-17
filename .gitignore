@@ -4,3 +4,4 @@ src/blockchain/scripts
 src/frontend/artifacts
 .env
 yarn-error.log
+dist
