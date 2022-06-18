@@ -25,7 +25,7 @@ const App = () => {
     if(wallet === null) {
       connectWallet()
     } else {
-      const avatarFactoryAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3'
+      const avatarFactoryAddress = '0x31b4F82dc783531c5e9bb45da6C370D9F708BB6f'
       const _avatarFactory = new ethers.Contract(avatarFactoryAddress, AvatarFactory.abi, wallet.signer)
 
       setAvatarFactory(_avatarFactory)
