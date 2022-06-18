@@ -20,4 +20,19 @@ describe('AvatarFactory Unit Test', () => {
       expect(await avatarFactory.balanceOf(signers[0].address)).to.equal(1)
     })
   })
+
+  describe('Token URI', () => {
+    beforeEach(async () => {
+      await avatarFactory.mintAvatar(signers[0].address)
+    })
+
+    it('Should return a token URI', async () => {
+      const tokenURI = await avatarFactory.tokenURI(0)
+      console.log(`Token URI: ${tokenURI}`)
+    })
+
+    it('Should revert if the token does not exist', () => {
+      expect(avatarFactory.tokenURI(1)).to.be.revertedWith('AvatarFactory: Token does not exist')
+    })
+  })
 })
