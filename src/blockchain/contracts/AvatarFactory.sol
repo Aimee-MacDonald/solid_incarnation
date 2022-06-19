@@ -9,6 +9,8 @@ contract AvatarFactory is ERC721Enumerable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIdTracker;
 
+  address private avatarFaceAddress;
+
   constructor() ERC721("Solid Incarnation Avatar", "SIA") {}
 
   function mintAvatar(address recipient) external {
@@ -25,22 +27,13 @@ contract AvatarFactory is ERC721Enumerable {
     string memory name = "Avatar";
     string memory description = "Solid Incarnation Avatar";
 
+    string memory faceSVG = IAvatarFace(avatarFaceAddress).tokenSVG(0);
+
     string memory image = Base64.encode(bytes(string(abi.encodePacked(
       '<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">',
-        '<g id="face">',
-          '<ellipse cx="200" cy="180" rx="150" ry="110" style="fill:#9c888e;fill-opacity:1;fill-rule:evenodd;stroke-width:101.109;paint-order:markers fill stroke"/>',
-          '<g id="eyes">',
-            '<g id="left_eye">',
-              '<ellipse cx="145" cy="170" rx="30" ry="35" style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:98.2663;paint-order:markers fill stroke"/>',
-              '<circle cx="150" cy="170" r="15" style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:98.2663;paint-order:markers fill stroke"/>',
-            '</g>',
-            '<g id="right_eye">',
-              '<ellipse cx="235" cy="170" rx="30" ry="35" style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:98.2663;paint-order:markers fill stroke"/>',
-              '<circle cx="230" cy="170" r="15" style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke-width:98.2663;paint-order:markers fill stroke"/>',
-            '</g>',
-          '</g>',
-        '</g>',
-      '</svg>'))));
+        faceSVG,
+      '</svg>'
+    ))));
     
     return
       string(
@@ -65,4 +58,12 @@ contract AvatarFactory is ERC721Enumerable {
         )
       );
   }
+
+  function setFaceAddress(address faceAddress) external {
+    avatarFaceAddress = faceAddress;
+  }
+}
+
+interface IAvatarFace {
+  function tokenSVG(uint256 tokenId) external pure returns (string memory);
 }
