@@ -16,12 +16,16 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
 
   address public avatarImplementationAddress;
 
-  constructor() ERC721("Solid Incarnation Avatar", "SIA") {}
+  constructor(address _avatarImplementationAddress) ERC721("Solid Incarnation Avatar", "SIA") {
+    avatarImplementationAddress = _avatarImplementationAddress;
+  }
 
   function mintAvatar(address recipient) external {
     address cloneAddress = Clones.clone(avatarImplementationAddress);
-    require(cloneAddress != address(0), "AvatarFactory: Contract Deployment Failed");
     _contractAddresses[_tokenIdTracker.current()] = cloneAddress;
+
+    IAvatar(cloneAddress).init();
+    IAvatar(cloneAddress).transferOwnership(recipient);
 
     _safeMint(recipient, _tokenIdTracker.current());
     _tokenIdTracker.increment();
@@ -30,11 +34,13 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
   }
 
   function contractAddressOf(uint256 tokenId) external view returns (address) {
+    require(_exists(tokenId), "AvatarFactory: Token does not exist");
+
     return _contractAddresses[tokenId];
   }
 
-  function tokenURI(uint256 id) public view override returns (string memory) {
-    require(_exists(id), "AvatarFactory: Token does not exist");
+  function tokenURI(uint256 tokenId) public view override returns (string memory) {
+    require(_exists(tokenId), "AvatarFactory: Token does not exist");
 
     string memory color = "000000";
     string memory name = "Avatar";
@@ -42,11 +48,7 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
 
     string memory faceSVG = IAvatarFace(avatarFaceAddress).tokenSVG(0);
 
-    string memory image = Base64.encode(bytes(string(abi.encodePacked(
-      '<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">',
-        faceSVG,
-      '</svg>'
-    ))));
+    string memory image = IAvatar(_contractAddresses[tokenId]).imageData();
     
     return
       string(
@@ -62,7 +64,6 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
                   '","description":"',
                   description,
                   '","image":"',
-                  'data:image/svg+xml;base64,',
                   image,
                   '","attributes":"[]"}'            
               )
@@ -75,14 +76,14 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
   function setFaceAddress(address faceAddress) external {
     avatarFaceAddress = faceAddress;
   }
-
-  function setAvatarImplementation(address _avatarImplementationAddress) external onlyOwner {
-    avatarImplementationAddress = _avatarImplementationAddress;
-
-    //  Emit Event
-  }
 }
 
 interface IAvatarFace {
   function tokenSVG(uint256 tokenId) external pure returns (string memory);
+}
+
+interface IAvatar {
+  function init() external;
+  function transferOwnership(address newOwner) external;
+  function imageData() external view returns (string memory);
 }
