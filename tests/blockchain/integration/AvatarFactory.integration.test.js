@@ -2,7 +2,7 @@ const { expect } = require('chai')
 
 describe('AvatarFactory Integration Test', () => {
   let signers
-  let avatarFactory, avatarFace
+  let avatarFactory
 
   beforeEach(async () => {
     signers = await ethers.getSigners()
@@ -12,14 +12,10 @@ describe('AvatarFactory Integration Test', () => {
 
     const AvatarFactory = await ethers.getContractFactory('AvatarFactory')
     avatarFactory = await AvatarFactory.deploy(avatar.address)
-
-    const AvatarFace = await ethers.getContractFactory('AvatarFace')
-    avatarFace = await AvatarFace.deploy()
   })
 
   describe('Token URI', () => {
     beforeEach(async () => {
-      await avatarFactory.setFaceAddress(avatarFace.address)
       await avatarFactory.mintAvatar(signers[0].address)
     })
 

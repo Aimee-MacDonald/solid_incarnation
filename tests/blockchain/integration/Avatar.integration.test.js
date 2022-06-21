@@ -7,7 +7,7 @@ describe('Avatar Integration', () => {
   beforeEach(async () => {
     const Avatar = await ethers.getContractFactory('Avatar')
     const AvatarFactory = await ethers.getContractFactory('AvatarFactory')
-
+    
     const avatar = await Avatar.deploy()
     const avatarFactory = await AvatarFactory.deploy(avatar.address)
 

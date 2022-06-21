@@ -14,8 +14,6 @@ contract AvatarFace is ERC721Enumerable {
   function mint(address recipient) external {
     _safeMint(recipient, _tokenIdTracker.current());
     _tokenIdTracker.increment();
-
-    //  Check Event Emition
   }
 
   function tokenURI(uint256 tokenId) public view override returns (string memory) {

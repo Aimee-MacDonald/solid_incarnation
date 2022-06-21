@@ -1,7 +1,7 @@
 {
   "name": "solid_incarnation",
   "description": "Cross Platform Composable NFT Avatar",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "index.js",
   "repository": "https://github.com/Aimee-MacDonald/solid_incarnation.git",
   "author": "Aimee MacDonald <aimeelmacdonald@gmail.com>",

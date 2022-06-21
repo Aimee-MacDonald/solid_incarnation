@@ -3,18 +3,16 @@ const { expect } = require('chai')
 describe('AvatarFactory Unit Test', () => {
   let signers
   let avatarFactory
-  let avatarFaceMock, AvatarMock
+  let AvatarMock
 
   beforeEach(async () => {
     signers = await ethers.getSigners()
 
     AvatarMock = await ethers.getContractFactory('AvatarMock')
     const AvatarFactory = await ethers.getContractFactory('AvatarFactory')
-    const AvatarFaceMock = await ethers.getContractFactory('AvatarFaceMock')
     
     const avatarMock = await AvatarMock.deploy()
     avatarFactory = await AvatarFactory.deploy(avatarMock.address)
-    avatarFaceMock = await AvatarFaceMock.deploy()
   })
 
   describe('Minting', () => {
@@ -79,7 +77,6 @@ describe('AvatarFactory Unit Test', () => {
 
   describe('Token URI', () => {
     beforeEach(async () => {
-      await avatarFactory.setFaceAddress(avatarFaceMock.address)
       await avatarFactory.mintAvatar(signers[0].address)
     })
 

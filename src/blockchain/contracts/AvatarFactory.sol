@@ -11,7 +11,6 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIdTracker;
 
-  address private avatarFaceAddress;
   mapping(uint256=>address) private _contractAddresses;
 
   address public avatarImplementationAddress;
@@ -29,8 +28,6 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
 
     _safeMint(recipient, _tokenIdTracker.current());
     _tokenIdTracker.increment();
-
-    //  Check Event Emition
   }
 
   function contractAddressOf(uint256 tokenId) external view returns (address) {
@@ -45,8 +42,6 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
     string memory color = "000000";
     string memory name = "Avatar";
     string memory description = "Solid Incarnation Avatar";
-
-    string memory faceSVG = IAvatarFace(avatarFaceAddress).tokenSVG(0);
 
     string memory image = IAvatar(_contractAddresses[tokenId]).imageData();
     
@@ -72,14 +67,6 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
         )
       );
   }
-
-  function setFaceAddress(address faceAddress) external {
-    avatarFaceAddress = faceAddress;
-  }
-}
-
-interface IAvatarFace {
-  function tokenSVG(uint256 tokenId) external pure returns (string memory);
 }
 
 interface IAvatar {

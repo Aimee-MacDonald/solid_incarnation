@@ -12,6 +12,10 @@ contract AvatarMock {
   }
   
   function transferOwnership(address recipient) external {
+    //  Silence test warning
+    address temp = recipient;
+    temp = address(0);
+
     wasTransferred = true;
   }
 }
