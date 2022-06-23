@@ -17,6 +17,7 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
 
   constructor(address _avatarImplementationAddress) ERC721("Solid Incarnation Avatar", "SIA") {
     avatarImplementationAddress = _avatarImplementationAddress;
+    _tokenIdTracker.increment();
   }
 
   function mintAvatar(address recipient) external {

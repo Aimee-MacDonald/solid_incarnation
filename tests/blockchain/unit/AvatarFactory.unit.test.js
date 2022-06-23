@@ -28,17 +28,17 @@ describe('AvatarFactory Unit Test', () => {
       await avatarFactory.mintAvatar(signers[0].address)
       await avatarFactory.mintAvatar(signers[1].address)
 
-      const contractAddress_0 = await avatarFactory.contractAddressOf(0)
       const contractAddress_1 = await avatarFactory.contractAddressOf(1)
+      const contractAddress_2 = await avatarFactory.contractAddressOf(2)
 
-      expect(contractAddress_0).to.not.equal('0x0000000000000000000000000000000000000000')
       expect(contractAddress_1).to.not.equal('0x0000000000000000000000000000000000000000')
-      expect(contractAddress_0).to.not.equal(contractAddress_1)
+      expect(contractAddress_2).to.not.equal('0x0000000000000000000000000000000000000000')
+      expect(contractAddress_1).to.not.equal(contractAddress_2)
     })
 
     it('Should initialise the new Avatar contract', async () => {
       await avatarFactory.mintAvatar(signers[0].address)
-      const mockAvatarAddress = await avatarFactory.contractAddressOf(0)
+      const mockAvatarAddress = await avatarFactory.contractAddressOf(1)
       expect(mockAvatarAddress).to.not.equal('0x0000000000000000000000000000000000000000')
       const mockAvatar = await AvatarMock.attach(mockAvatarAddress)
 
@@ -49,7 +49,7 @@ describe('AvatarFactory Unit Test', () => {
 
     it('Should transfer the contract to the recipients wallet', async () => {
       await avatarFactory.mintAvatar(signers[0].address)
-      const mockAvatarAddress = await avatarFactory.contractAddressOf(0)
+      const mockAvatarAddress = await avatarFactory.contractAddressOf(1)
       expect(mockAvatarAddress).to.not.equal('0x0000000000000000000000000000000000000000')
       const mockAvatar = await AvatarMock.attach(mockAvatarAddress)
       
@@ -65,13 +65,13 @@ describe('AvatarFactory Unit Test', () => {
     })
 
     it('Should return the avatar contract address', async () => {
-      const contractAddress = await avatarFactory.contractAddressOf(0)
+      const contractAddress = await avatarFactory.contractAddressOf(1)
 
       expect(contractAddress).to.not.equal('0x0000000000000000000000000000000000000000')
     })
     
     it('Should revert if the token does not exist', () => {
-      expect(avatarFactory.contractAddressOf(1)).to.be.revertedWith('AvatarFactory: Token does not exist')
+      expect(avatarFactory.contractAddressOf(0)).to.be.revertedWith('AvatarFactory: Token does not exist')
     })
   })
 
@@ -81,12 +81,12 @@ describe('AvatarFactory Unit Test', () => {
     })
 
     it('Should return a token URI', async () => {
-      const tokenURI = await avatarFactory.tokenURI(0)
+      const tokenURI = await avatarFactory.tokenURI(1)
       expect(tokenURI).to.equal('data:application/json;base64,eyJiYWNrZ3JvdW5kX2NvbG9yIjoiMDAwMDAwIiwibmFtZSI6IkF2YXRhciIsImRlc2NyaXB0aW9uIjoiU29saWQgSW5jYXJuYXRpb24gQXZhdGFyIiwiaW1hZ2UiOiJJbWFnZSBEYXRhIiwiYXR0cmlidXRlcyI6IltdIn0=')
     })
 
     it('Should revert if the token does not exist', () => {
-      expect(avatarFactory.tokenURI(1)).to.be.revertedWith('AvatarFactory: Token does not exist')
+      expect(avatarFactory.tokenURI(0)).to.be.revertedWith('AvatarFactory: Token does not exist')
     })
   })
 })

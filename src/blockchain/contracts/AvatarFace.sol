@@ -9,7 +9,9 @@ contract AvatarFace is ERC721Enumerable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIdTracker;
 
-  constructor() ERC721("Solid Incarnation Avatar Face", "SIAF") {}
+  constructor() ERC721("Solid Incarnation Avatar Face", "SIAF") {
+    _tokenIdTracker.increment();
+  }
 
   function mint(address recipient) external {
     _safeMint(recipient, _tokenIdTracker.current());
@@ -47,7 +49,9 @@ contract AvatarFace is ERC721Enumerable {
     );
   }
 
-  function tokenSVG(uint256 tokenId) public pure returns (string memory) {
+  function tokenSVG(uint256 tokenId) public view returns (string memory) {
+    require(_exists(tokenId), "AvatarFace: Token does not exist");
+
     return string(abi.encodePacked(
       '<g id="face">',
         '<ellipse cx="200" cy="180" rx="150" ry="110" style="fill:#9c888e;fill-opacity:1;fill-rule:evenodd;stroke-width:101.109;paint-order:markers fill stroke"/>',
