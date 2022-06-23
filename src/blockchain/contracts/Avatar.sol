@@ -27,8 +27,6 @@ contract Avatar is OwnableUpgradeable {
   }
 
   function reconstructImageData() external {
-    //  imageData = string(abi.encodePacked('data:image/svg+xml;base64,', Base64.encode(bytes('<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg"></svg>'))));
-
     string memory faceSVG = IAvatarFace(faceAddress).tokenSVG(0);
 
     imageData = string(abi.encodePacked(
