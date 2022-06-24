@@ -8,6 +8,7 @@ contract Avatar is OwnableUpgradeable {
   string public imageData;
   
   address public faceAddress;
+  uint256 public faceId;
 
   constructor() {
     _disableInitializers();
@@ -22,12 +23,13 @@ contract Avatar is OwnableUpgradeable {
 
   function setFace(address faceContractAddress, uint256 tokenId) external {
     faceAddress = faceContractAddress;
+    faceId = tokenId;
     
     //  Emit Event
   }
 
   function reconstructImageData() external {
-    string memory faceSVG = IAvatarFace(faceAddress).tokenSVG(1);
+    string memory faceSVG = IAvatarFace(faceAddress).tokenSVG(faceId);
 
     imageData = string(abi.encodePacked(
       'data:image/svg+xml;base64,',

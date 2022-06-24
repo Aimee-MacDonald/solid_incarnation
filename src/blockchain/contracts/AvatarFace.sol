@@ -9,11 +9,16 @@ contract AvatarFace is ERC721Enumerable {
   using Counters for Counters.Counter;
   Counters.Counter private _tokenIdTracker;
 
-  constructor() ERC721("Solid Incarnation Avatar Face", "SIAF") {
+  mapping(uint256 => string) private _tokenGeometries;
+  IGeometry GEOMETRY;
+
+  constructor(address geometryAddress) ERC721("Solid Incarnation Avatar Face", "SIAF") {
     _tokenIdTracker.increment();
+    GEOMETRY = IGeometry(geometryAddress);
   }
 
-  function mint(address recipient) external {
+  function mint(address recipient, uint256 geometryId) external {
+    _tokenGeometries[_tokenIdTracker.current()] = GEOMETRY.getGeometry(geometryId);
     _safeMint(recipient, _tokenIdTracker.current());
     _tokenIdTracker.increment();
   }
@@ -54,7 +59,7 @@ contract AvatarFace is ERC721Enumerable {
 
     return string(abi.encodePacked(
       '<g id="face">',
-        '<ellipse cx="200" cy="180" rx="150" ry="110" style="fill:#9c888e;fill-opacity:1;fill-rule:evenodd;stroke-width:101.109;paint-order:markers fill stroke"/>',
+        _tokenGeometries[tokenId],
         '<g id="eyes">',
           '<g id="left_eye">',
             '<ellipse cx="145" cy="170" rx="30" ry="35" style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke-width:98.2663;paint-order:markers fill stroke"/>',
@@ -68,4 +73,8 @@ contract AvatarFace is ERC721Enumerable {
       '</g>'
     ));
   }
+}
+
+interface IGeometry {
+  function getGeometry(uint256 geometryIndex) external view returns (string memory);
 }
