@@ -3,20 +3,16 @@ import { ethers } from 'ethers'
 
 import AvatarFactory from '../artifacts/src/blockchain/contracts/AvatarFactory.sol/AvatarFactory.json'
 import Avatar from '../artifacts/src/blockchain/contracts/Avatar.sol/Avatar.json'
-import AvatarFace from '../artifacts/src/blockchain/contracts/AvatarFace.sol/AvatarFace.json'
+
+import AvatarView from './views/AvatarView/AvatarView'
 
 const App = () => {
   const [ wallet, setWallet ] = useState(null)
   const [ avatarFactory, setAvatarFactory ] = useState(null)
   const [ avatarCount, setAvatarCount ] = useState(null)
-  const [ avatarImage, setAvatarImage ] = useState('#')
-
-  const [ avatarFace, setAvatarFace ] = useState(null)
-  const [ avatarFaceCount, setAvatarFaceCount ] = useState(null)
-  const [ avatarFaces, setAvatarFaces ] = useState([])
+  const [ avatarContract, setAvatarContract ] = useState(null)
 
   useEffect(() => {loadAvatar()}, [wallet, avatarFactory])
-  useEffect(() => {loadFaces()}, [wallet, avatarFactory])
   
   const connectWallet = async () => {
     await window.ethereum.request({ method: 'eth_requestAccounts' })
@@ -47,20 +43,68 @@ const App = () => {
     } else {
       const afBalance = await avatarFactory.balanceOf(wallet.address)
       setAvatarCount(afBalance.toNumber())
-
+      
       if(afBalance > 0) {
-        avatarFactory.tokenURI(0)
+        avatarFactory.contractAddressOf(1)
+          .then(avatarAddress => new ethers.Contract(avatarAddress, Avatar.abi, wallet.signer))
+          .then(contract => setAvatarContract(contract))
+          .catch(error => console.log(error))
+      }
+      /* 
           .then(result => result.substring(29, result.length))
           .then(result => window.atob(result))
           .then(result => JSON.parse(result))
           .then(result => result.image)
           .then(result => setAvatarImage(result))
           .catch(error => console.log(error))
-      }
+ */
     }
   }
+  
+  const mintAvatar = () => {
+    if(avatarFactory === null) {
+      loadAvatarFactory()
+    } else {
+      avatarFactory.mintAvatar(wallet.address)
+        .then(transaction => transaction.wait())
+        .then(() => loadAvatar())
+        .catch(error => console.log(error))
+    }
+  }
+  
+  return (
+    <div>
+      <h1>Solid Incarnation</h1>
+      
+      <p>Avatar Count: {avatarCount}</p>
+      {avatarCount !== 1 && <button onClick={mintAvatar}>Mint Avatar</button>}
+      {avatarCount > 0 && <AvatarView avatar={avatarContract}/>}
+    </div>
+  )
+}
 
-  const loadAvatarFace = () => {
+export default App
+
+/*
+
+
+  import AvatarFace from '../artifacts/src/blockchain/contracts/AvatarFace.sol/AvatarFace.json'
+  import AvatarView from './views/AvatarView/AvatarView'
+
+
+  const [ avatarFace, setAvatarFace ] = useState(null)
+  const [ avatarFaceCount, setAvatarFaceCount ] = useState(null)
+  const [ avatarFaces, setAvatarFaces ] = useState([])
+
+
+  useEffect(() => {loadFaces()}, [wallet, avatarFactory])
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+const loadAvatarFace = () => {
     if(wallet === null) {
       connectWallet()
     } else {
@@ -93,18 +137,12 @@ const App = () => {
     }
   }
 
-  const mintAvatar = () => {
-    if(avatarFactory === null) {
-      loadAvatarFactory()
-    } else {
-      avatarFactory.mintAvatar(wallet.address)
-        .then(transaction => transaction.wait())
-        .then(() => loadAvatar())
-        .catch(error => console.log(error))
-    }
-  }
 
-  const mintFace = () => {
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+const mintFace = () => {
     if(avatarFace === null) {
       loadAvatarFace()
     } else {
@@ -133,13 +171,12 @@ const App = () => {
     }
   }
 
-  return (
-    <div>
-      <h1>Solid Incarnation</h1>
-      <p>Avatar Count: {avatarCount}</p>
-      {avatarCount !== 1 && <button onClick={mintAvatar}>Mint Avatar</button>}
-      {avatarCount > 0 && <img src={avatarImage}/>}
-      <h2>Faces</h2>
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+<h2>Faces</h2>
       <p>AvatarFace Count: {avatarFaceCount}</p>
       <button onClick={mintFace}>Mint Face</button>
       {avatarFaces.map((face, i) => (
@@ -148,8 +185,4 @@ const App = () => {
           <button onClick={applyFace}>Apply to Avatar</button>
         </div>
       ))}
-    </div>
-  )
-}
-
-export default App
+*/
