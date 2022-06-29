@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 
-const AvatarImage = ({ avatar }) => {
-  const [ avatarImage, setAvatarImage ] = useState('#')
+import { BlockchainContext } from '../../../../contexts/Blockchain'
 
+const AvatarImage = () => {
+  const { avatar } = useContext(BlockchainContext)
+/* 
   useEffect(() => {
-    if(avatar !== null){
-      avatar.imageData()
+    if(avatarContract !== null){
+      avatarContract.imageData()
         .then(result => setAvatarImage(result))
         .catch(error => console.log(error))
     }
-  }, [avatar])
-
+  }, [avatarContract])
+ */
   return (
     <div>
-      <img src={avatarImage} />
+      <img src={avatar.imageData} />
     </div>
   )
 }
