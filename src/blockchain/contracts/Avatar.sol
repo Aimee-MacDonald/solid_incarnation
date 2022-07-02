@@ -9,6 +9,9 @@ contract Avatar is OwnableUpgradeable {
   
   address public faceAddress;
   uint256 public faceId;
+  
+  address public layoutAddress;
+  uint256 public layoutId;
 
   constructor() {
     _disableInitializers();
@@ -24,6 +27,13 @@ contract Avatar is OwnableUpgradeable {
   function setFace(address faceContractAddress, uint256 tokenId) external {
     faceAddress = faceContractAddress;
     faceId = tokenId;
+    
+    //  Emit Event
+  }
+
+  function setLayout(address _layoutAddress, uint256 _layoutId) external {
+    layoutAddress = _layoutAddress;
+    layoutId = _layoutId;
     
     //  Emit Event
   }
