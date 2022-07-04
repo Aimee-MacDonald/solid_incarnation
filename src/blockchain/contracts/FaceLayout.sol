@@ -12,8 +12,8 @@ contract FaceLayout is Layout {
   function tokenSVG(uint256 tokenId) public override view returns (string memory) {
     return string(abi.encodePacked(
       '<g id="face">',
-        eyesGeometry[tokenId],
         faceGeometry[tokenId],
+        eyesGeometry[tokenId],
         noseGeometry[tokenId],
         mouthGeometry[tokenId],
       '</g>'
