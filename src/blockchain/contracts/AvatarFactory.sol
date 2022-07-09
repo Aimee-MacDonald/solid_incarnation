@@ -3,7 +3,6 @@ pragma solidity ^0.8.14;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
-import 'base64-sol/base64.sol';
 import "@openzeppelin/contracts/proxy/Clones.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
@@ -40,38 +39,12 @@ contract AvatarFactory is Ownable, ERC721Enumerable {
   function tokenURI(uint256 tokenId) public view override returns (string memory) {
     require(_exists(tokenId), "AvatarFactory: Token does not exist");
 
-    string memory color = "000000";
-    string memory name = "Avatar";
-    string memory description = "Solid Incarnation Avatar";
-
-    string memory image = IAvatar(_contractAddresses[tokenId]).imageData();
-    
-    return
-      string(
-        abi.encodePacked(
-          'data:application/json;base64,',
-          Base64.encode(
-            bytes(
-              abi.encodePacked(
-                '{"background_color":"',
-                  color,
-                  '","name":"',
-                  name,
-                  '","description":"',
-                  description,
-                  '","image":"',
-                  image,
-                  '","attributes":"[]"}'            
-              )
-            )
-          )
-        )
-      );
+    return IAvatar(_contractAddresses[tokenId]).tokenURI();
   }
 }
 
 interface IAvatar {
   function init() external;
   function transferOwnership(address newOwner) external;
-  function imageData() external view returns (string memory);
+  function tokenURI() external view returns (string memory);
 }

@@ -82,7 +82,7 @@ describe('AvatarFactory Unit Test', () => {
 
     it('Should return a token URI', async () => {
       const tokenURI = await avatarFactory.tokenURI(1)
-      expect(tokenURI).to.equal('data:application/json;base64,eyJiYWNrZ3JvdW5kX2NvbG9yIjoiMDAwMDAwIiwibmFtZSI6IkF2YXRhciIsImRlc2NyaXB0aW9uIjoiU29saWQgSW5jYXJuYXRpb24gQXZhdGFyIiwiaW1hZ2UiOiJJbWFnZSBEYXRhIiwiYXR0cmlidXRlcyI6IltdIn0=')
+      expect(tokenURI).to.equal('Token URI')
     })
 
     it('Should revert if the token does not exist', () => {

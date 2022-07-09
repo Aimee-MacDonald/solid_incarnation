@@ -16,6 +16,10 @@ describe('Avatar Unit', () => {
     expect(avatar.init()).to.be.revertedWith('Initializable: contract is already initialized')
   })
 
+  it('Should return a token URI', async () => {
+    expect(await avatar.tokenURI()).to.equal('data:application/json;base64,eyJiYWNrZ3JvdW5kX2NvbG9yIjoiMDAwMDAwIiwibmFtZSI6IkF2YXRhciIsImRlc2NyaXB0aW9uIjoiU29saWQgSW5jYXJuYXRpb24gQXZhdGFyIiwiaW1hZ2UiOiIiLCJhdHRyaWJ1dGVzIjoiW10ifQ==')
+  })
+
   describe('Image Data', () => {
     describe('Layout', () => {
       it('Should set the Layout Address and token ID', async () => {

@@ -5,10 +5,12 @@ contract AvatarMock {
   bool public initialised;
   bool public wasTransferred;
   string public imageData;
+  string public tokenURI;
 
   function init() external {
     initialised = true;
     imageData = "Image Data";
+    tokenURI = "Token URI";
   }
   
   function transferOwnership(address recipient) external {

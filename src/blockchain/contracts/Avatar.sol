@@ -42,6 +42,34 @@ contract Avatar is OwnableUpgradeable {
 
     //  Emit Event
   }
+
+  function tokenURI() external view returns (string memory) {
+    string memory color = "000000";
+    string memory name = "Avatar";
+    string memory description = "Solid Incarnation Avatar";
+    
+    return
+      string(
+        abi.encodePacked(
+          'data:application/json;base64,',
+          Base64.encode(
+            bytes(
+              abi.encodePacked(
+                '{"background_color":"',
+                  color,
+                  '","name":"',
+                  name,
+                  '","description":"',
+                  description,
+                  '","image":"',
+                  imageData,
+                  '","attributes":"[]"}'            
+              )
+            )
+          )
+        )
+      );
+  }
 }
 
 interface ILayout {
