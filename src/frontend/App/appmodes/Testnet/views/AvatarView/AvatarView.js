@@ -3,7 +3,7 @@ import React, { useState, useContext } from 'react'
 import AvatarImage from './AvatarImage/AvatarImage'
 import AvatarEditor from './AvatarEditor/AvatarEditor'
 
-import { BlockchainContext } from '../../../contexts/Blockchain'
+import { BlockchainContext } from '../../../../../contexts/Blockchain'
 
 const AvatarView = () => {
   const { avatar } = useContext(BlockchainContext)

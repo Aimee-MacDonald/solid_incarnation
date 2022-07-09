@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react'
-import { BlockchainContext } from '../../../../contexts/Blockchain'
+
+import { BlockchainContext } from '../../../../../../contexts/Blockchain'
 
 const FaceLayoutToken = ({ faceLayoutToken }) => {
   const { eyesLayout, faceLayout, geometry } = useContext(BlockchainContext)

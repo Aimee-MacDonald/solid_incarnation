@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { BlockchainContext } from '../../../../contexts/Blockchain'
+import { BlockchainContext } from '../../../../../../contexts/Blockchain'
 
 const AvatarEditor = () => {
   const { avatar } = useContext(BlockchainContext)

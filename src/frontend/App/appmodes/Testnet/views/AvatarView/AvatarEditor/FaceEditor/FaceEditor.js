@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 
-import { BlockchainContext } from '../../../../../contexts/Blockchain'
+import { BlockchainContext } from '../../../../../../../contexts/Blockchain'
 
 const FaceEditor = () => {
   const [ faceAddress, setFaceAddress ] = useState(null)

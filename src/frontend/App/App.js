@@ -1,20 +1,12 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 
 import './App.sass'
-import { BlockchainContext } from '../contexts/Blockchain'
 
-import MainnetView from './views/MainnetView/MainnetView'
-import WelcomeView from './views/WelcomeView/WelcomeView'
-import AvatarView from './views/AvatarView/AvatarView'
-import CollectionsView from './views/CollectionsView/CollectionsView'
-import GuildsView from './views/GuildsView/GuildsView'
-import LayoutView from './views/LayoutView/LayoutView'
-import MintView from './views/MintView/MintView'
-import GeometryView from './views/GeometryView/GeometryView'
+import Header from './Header/Header'
+import Mainnet from './appmodes/Mainnet/Mainnet'
+import Testnet from './appmodes/Testnet/Testnet'
 
 const App = () => {
-  const { avatar } = useContext(BlockchainContext)
-  
   const [ mainnet, setMainnet ] = useState(true)
   const [ activeView, setActiveView ] = useState(0)
 
@@ -30,37 +22,15 @@ const App = () => {
 
   return (
     <div id='App'>
-      <div id='header'>
-        {!mainnet && (
-          <nav>
-            <button onClick={() => setActiveView(views.indexOf('WELCOME'))}>SI</button>
-            <button onClick={() => setActiveView(views.indexOf('MINT'))}>Mint</button>
-            <button onClick={() => setActiveView(views.indexOf('AVATAR'))}>Avatar</button>
-            <button onClick={() => setActiveView(views.indexOf('COLLECTIONS'))}>Collections</button>
-            <button onClick={() => setActiveView(views.indexOf('GUILDS'))}>Guilds</button>
-            <button onClick={() => setActiveView(views.indexOf('LAYOUT'))}>Layout</button>
-            <button onClick={() => setActiveView(views.indexOf('GEOMETRY'))}>Geometry</button>
-          </nav>
-        )}
+      <Header
+        mainnet={mainnet}
+        toggleMainnet={() => setMainnet(mainnet => !mainnet)}
+        views={views}
+        setActiveView={setActiveView}
+      />
 
-        <div>
-          {!mainnet && <button onClick={() => setMainnet(true)}>Polygon Mainnet</button>}
-          {mainnet && <button onClick={() => setMainnet(false)}>Mumbai Testnet</button>}
-        </div>
-      </div>
-
-      {mainnet && <MainnetView/>}
-      {!mainnet && (
-        <div>
-          {activeView === views.indexOf('WELCOME') && <WelcomeView/>}
-          {activeView === views.indexOf('MINT') && <MintView/>}
-          {activeView === views.indexOf('AVATAR') && <AvatarView/>}
-          {activeView === views.indexOf('COLLECTIONS') && <CollectionsView/>}
-          {activeView === views.indexOf('GUILDS') && <GuildsView/>}
-          {activeView === views.indexOf('LAYOUT') && <LayoutView/>}
-          {activeView === views.indexOf('GEOMETRY') && <GeometryView/>}
-        </div>
-      )}
+      {mainnet && <Mainnet views={views} activeView={activeView}/>}
+      {!mainnet && <Testnet views={views} activeView={activeView}/>}
     </div>
   )
 }

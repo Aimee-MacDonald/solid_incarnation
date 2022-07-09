@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 
-import { BlockchainContext } from '../../../contexts/Blockchain'
+import { BlockchainContext } from '../../../../../contexts/Blockchain'
 
 import EyesLayoutToken from './EyesLayoutToken/EyesLayoutToken'
 import FaceLayoutToken from './FaceLayoutToken/FaceLayoutToken'
+
+import './LayoutView.sass'
 
 const LayoutView = () => {
   const { wallet, eyesLayout, faceLayout } = useContext(BlockchainContext)
@@ -101,7 +103,7 @@ const LayoutView = () => {
   }
 
   return (
-    <div>
+    <div id='LayoutView'>
       <h1>Layout View</h1>
 
       <div>

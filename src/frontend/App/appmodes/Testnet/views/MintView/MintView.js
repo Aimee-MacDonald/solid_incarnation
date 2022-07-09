@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import { BlockchainContext } from '../../../contexts/Blockchain'
+
+import { BlockchainContext } from '../../../../../contexts/Blockchain'
 
 const MintView = () => {
   const { wallet, avatarFactory } = useContext(BlockchainContext)
