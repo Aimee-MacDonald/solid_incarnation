@@ -1,7 +1,9 @@
 import React from 'react'
 
+import './Header.sass'
+
 const Header = ({ mainnet, toggleMainnet, views, setActiveView }) => (
-  <div>
+  <div id='Header'>
     {!mainnet && (
       <nav>
         <button onClick={() => setActiveView(views.indexOf('WELCOME'))}>SI</button>
@@ -14,8 +16,13 @@ const Header = ({ mainnet, toggleMainnet, views, setActiveView }) => (
       </nav>
     )}
 
-    {!mainnet && <button onClick={toggleMainnet}>Switch to Polygon Mainnet</button>}
-    {mainnet && <button onClick={toggleMainnet}>Switch to Mumbai Testnet</button>}
+    <div id='chainSwitch'>
+      <p>Polygon Mainnet</p>
+      <button id='toggle' className={mainnet ? 'left' : 'right'} onClick={toggleMainnet}>
+        <div></div>
+      </button>
+      <p>Mumbai Testnet</p>
+    </div>
   </div>
 )
 
