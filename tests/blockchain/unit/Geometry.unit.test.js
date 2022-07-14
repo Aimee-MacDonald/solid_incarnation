@@ -15,4 +15,12 @@ describe('Geometry Unit', () => {
     
     expect(await geometry.getGeometry(1)).to.equal('Geometry')
   })
+
+  it('Should return the total number of geometries in the contract', async () => {
+    expect(await geometry.geometryCount()).to.equal(0)
+    
+    await geometry.addGeometry('Geometry')
+    
+    expect(await geometry.geometryCount()).to.equal(1)
+  })
 })

@@ -23,4 +23,8 @@ contract Geometry {
     
     //  Emit Event
   }
+
+  function geometryCount() external view returns (uint256) {
+    return _geometryIndexTracker.current() - 1;
+  }
 }
